@@ -1,5 +1,6 @@
 package com.example.goalone;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Switch;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,23 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class SettingsFragment extends Fragment {
+
+    private Switch bluetooth;
+    private Switch notification;
+    private Switch vibrate;
+    private Switch ringing;
+    private Button saveBtn;
+
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String BLUETOOTH_SWITCH = "bluetooth";
+    public static final String NOTIFICATION_SWITCH = "notification";
+    public static final String VIBRATE_SWITCH = "vibrate";
+    public static final String RINGING_SWITCH = "ringing";
+
+    private boolean bluetoothOnOff;
+    private boolean notificationOnOff;
+    private boolean vibrateOnOff;
+    private boolean ringingOnOff;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,16 +70,72 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
+//        bluetooth.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                saveData();
+//            }
+//        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View v = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        bluetooth = v.findViewById(R.id.switch1);
+        notification = v.findViewById(R.id.switch2);
+        vibrate = v.findViewById(R.id.switch3);
+        ringing = v.findViewById(R.id.switch4);
+
+        saveBtn = v.findViewById((R.id.button));
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveData();
+            }
+        });
+
+        loadData();
+        updateViews();
+        return v;
+    }
+    public void saveData(){
+        SharedPreferences sharedPreferences = this.getContext().getSharedPreferences(SHARED_PREFS, this.getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean(BLUETOOTH_SWITCH, bluetooth.isChecked());
+        editor.putBoolean(NOTIFICATION_SWITCH, notification.isChecked());
+        editor.putBoolean(VIBRATE_SWITCH, vibrate.isChecked());
+        editor.putBoolean(RINGING_SWITCH, ringing.isChecked());
+
+        editor.apply();
+
+        //Toast.makeText(this, "Changes are saved", Toast.LENGTH_SHORT).show();
+    }
+
+    public void loadData(){
+        SharedPreferences sharedPreferences = this.getContext().getSharedPreferences(SHARED_PREFS, this.getContext().MODE_PRIVATE);
+        bluetoothOnOff = sharedPreferences.getBoolean(BLUETOOTH_SWITCH, true);
+        notificationOnOff = sharedPreferences.getBoolean(NOTIFICATION_SWITCH, true);
+        vibrateOnOff = sharedPreferences.getBoolean(VIBRATE_SWITCH, true);
+        ringingOnOff = sharedPreferences.getBoolean(RINGING_SWITCH, true);
+    }
+
+    public void updateViews(){
+        bluetooth.setChecked(bluetoothOnOff);
+        notification.setChecked(notificationOnOff);
+        vibrate.setChecked(vibrateOnOff);
+        ringing.setChecked(ringingOnOff);
     }
 }
