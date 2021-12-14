@@ -3,6 +3,7 @@ package com.example.goalone;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = null;
-                switch (item.getItemId()) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        switch (item.getItemId()) {
                     case R.id.homeFragment:
                         fragment = new HomeFragment();
 //                        bottomNavigationView.setSelectedItemId(R.id.homeFragment);
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
 //                        bottomNavigationView.setSelectedItemId(R.id.settingsFragment);
                         break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
-                return false;
+                transaction.replace(R.id.nav_host_fragment, fragment).commit();
+                return true;
             }
         });
     }
