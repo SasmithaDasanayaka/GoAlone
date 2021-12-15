@@ -19,8 +19,7 @@ public class LogsFragment extends Fragment {
     RecyclerView recyclerView;
 
     private String[] warningMsg, time;
-    private int images[] = {R.drawable.danger, R.drawable.warning, R.drawable.caution, R.drawable.safer};
-
+    private int images[];
     public LogsFragment() {
         // Required empty public constructor
     }
@@ -37,8 +36,22 @@ public class LogsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        warningMsg = getResources().getStringArray(R.array.warning_messages);
-        time = getResources().getStringArray(R.array.time);
+
+        //read history data from  database
+        warningMsg = new String[]{"High risk, danger", "Warning", "Caution", "Safer","Warning"};
+        time = new String[]{"10.00 am", "11.00 am", "11.10 am", "11.25 am", "11.45 am"};
+        images = new int[warningMsg.length];
+        for(int i = 0; i < warningMsg.length; i++){
+            if(warningMsg[i].equals("High risk, danger")){
+                images[i] = R.drawable.danger;
+            }else if(warningMsg[i].equals("Warning")){
+                images[i] = R.drawable.warning;
+            }else if(warningMsg[i].equals("Caution")){
+                images[i] = R.drawable.caution;
+            }else if(warningMsg[i].equals("Safer")){
+                images[i] = R.drawable.safer;
+            }
+        }
     }
 
     @Override
