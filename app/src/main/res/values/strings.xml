@@ -2,4 +2,19 @@
     <string name="app_name">GoAlone</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="warning_messages">
+        <item>High risk, danger</item>
+        <item>Warning</item>
+        <item>Caution</item>
+        <item>Safer</item>
+    </string-array>
+
+    <string-array name="time">
+        <item>10.00 am</item>
+        <item>10.00 am</item>
+        <item>10.00 am</item>
+        <item>10.00 am</item>
+    </string-array>
+
 </resources>
