@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,14 +24,10 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    final private BluetoothAdapter bluetoothAdapter;
+    private BluetoothAdapter bluetoothAdapter;
     private ListView deviceListView;
     private ArrayAdapter deviceArrayAdaptor;
-
-    public MainActivity() {
-        this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        ;
-    }
+    private TextView deviceDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +38,27 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.homeFragment);
+        deviceDetails = (TextView) findViewById(R.id.device_details);
 
 //        deviceListView = (ListView) findViewById(R.id.deviceListView);
 //        deviceArrayAdaptor = new ArrayAdapter<String>(this, R.layout.fragment_home);
 //        deviceListView.setAdapter(deviceArrayAdaptor);
-//        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (bluetoothAdapter == null) {
-            Toast.makeText(this, "BLUETOOTH NOT SUPPORTED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "BLUETOOTH NOT SUPPORTED", Toast.LENGTH_LONG).show();
         } else {
             if (!bluetoothAdapter.isEnabled()) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, 1);
             }
-            bluetoothScanning(bluetoothAdapter);
+            Toast.makeText(this, "start searching", Toast.LENGTH_LONG).show();
+//            bluetoothScanning(bluetoothAdapter);
+            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            registerReceiver(mReceiver, filter);
+            bluetoothAdapter.startDiscovery();
+            Toast.makeText(this, "stop searching", Toast.LENGTH_LONG).show();
+
         }
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -79,13 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void bluetoothScanning(BluetoothAdapter bluetoothAdapter) {
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(mReceiver, filter);
-        bluetoothAdapter.startDiscovery();
-        Log.i("scanning ", "started");
-    }
-
     // Create a BroadcastReceiver for ACTION_FOUND.
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
-
+                deviceDetails.setText("Found" + deviceHardwareAddress);
                 Log.i("Device Name: ", "device " + deviceName);
                 Log.i("deviceHardwareAddress ", "hard" + deviceHardwareAddress);
             }
