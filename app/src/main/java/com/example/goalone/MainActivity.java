@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         deviceListView = (ListView) findViewById(R.id.deviceListView);
 //        deviceArrayAdaptor = new ArrayAdapter<String>(this, R.layout.fragment_home);
 //        deviceListView.setAdapter(deviceArrayAdaptor);
-        //        deviceArrayAdaptor = new ArrayAdapter<String>(this, R.layout.fragment_home);
-//        deviceListView.setAdapter(deviceArrayAdaptor);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (bluetoothAdapter == null) {
