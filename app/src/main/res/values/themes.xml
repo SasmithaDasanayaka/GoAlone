@@ -22,4 +22,8 @@
     <style name="Theme.GoAlone.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.GoAlone.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="pinViewStyle">@style/PinWidget.PinView</item>
+    </style>
 </resources>
