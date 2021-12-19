@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout-w1240dp/activity_verification.xml" value="0.10475234270414993" />
+        <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout-w936dp/activity_verification.xml" value="0.1130464480874317" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/activity_verification.xml" value="0.264" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_home.xml" value="0.264" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_logs.xml" value="0.30625" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
