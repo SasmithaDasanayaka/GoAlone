@@ -10,14 +10,18 @@
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#8FE6BA">
 
         <Switch
             android:id="@+id/switch1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingLeft="50px"
+            android:paddingRight="50px"
             android:text="Bluetooth"
+            android:textColor="#0AA86E"
             app:layout_constraintBottom_toTopOf="@+id/switch2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.361"
@@ -27,10 +31,13 @@
 
         <Switch
             android:id="@+id/switch2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="352dp"
+            android:paddingLeft="50px"
+            android:paddingRight="50px"
             android:text="Show Notifications"
+            android:textColor="#0AA86E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.445"
@@ -38,10 +45,13 @@
 
         <Switch
             android:id="@+id/switch3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
+            android:paddingLeft="50px"
+            android:paddingRight="50px"
             android:text="Allow Vibrate"
+            android:textColor="#0AA86E"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.391"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,9 +59,12 @@
 
         <Switch
             android:id="@+id/switch4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="50px"
+            android:paddingRight="50px"
             android:text="Allow ringing"
+            android:textColor="#0AA86E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.388"
@@ -63,7 +76,9 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#0AA86E"
             android:text="Save Changes"
+            android:textColor="#8FE6BA"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

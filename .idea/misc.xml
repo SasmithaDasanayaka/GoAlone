@@ -4,7 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_home.xml" value="0.30625" />
+        <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_logs.xml" value="0.30625" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
         <entry key="..\:/Users/Missaka/AndroidStudioProjects/GoAlone/app/src/main/res/layout/my_row.xml" value="0.4" />
@@ -12,7 +12,6 @@
         <entry key="..\:/Users/sasmi/Documents/GitHub/Adroid Projects/GoAlone/app/src/main/res/layout/fragment_home.xml" value="0.12613981762917933" />
         <entry key="..\:/Users/sasmi/Documents/GitHub/Adroid Projects/GoAlone/app/src/main/res/layout/fragment_logs.xml" value="0.161231884057971" />
         <entry key="..\:/Users/sasmi/Documents/GitHub/Adroid Projects/GoAlone/app/src/main/res/layout/fragment_settings.xml" value="0.161231884057971" />
-        <entry key="..\:/Users/sasmi/Documents/GitHub/Adroid Projects/GoAlone/app/src/main/res/layout/my_row.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/sasmi/Documents/GitHub/Adroid Projects/GoAlone/app/src/main/res/menu/bottom_tab_menu.xml" value="0.259375" />
       </map>
     </option>
