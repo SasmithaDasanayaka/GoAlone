@@ -92,7 +92,7 @@ public class BluetoothLEService {
         }
     };
 
-    private void startScanLeDevice() {
+    public void startScanLeDevice() {
         scanRunnable = new Runnable() {
             @Override
             public void run() {
@@ -119,7 +119,7 @@ public class BluetoothLEService {
         serviceHandler.post(scanRunnable);
     }
 
-    private void stopScanLeDevice() {
+    public void stopScanLeDevice() {
         serviceHandler.removeCallbacks(scanRunnable);
         serviceHandler.removeCallbacks(advertiseRunnable);
 
