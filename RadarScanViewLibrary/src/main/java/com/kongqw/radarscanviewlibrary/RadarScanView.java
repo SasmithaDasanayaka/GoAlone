@@ -9,11 +9,14 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.SweepGradient;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+//import android.support.annotation.NonNull;
+//import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by kongqingwei on 2017/3/9.

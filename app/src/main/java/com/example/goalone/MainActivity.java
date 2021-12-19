@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.homeFragment);
-        deviceDetails = (TextView) findViewById(R.id.device_details);
+        //deviceDetails = (TextView) findViewById(R.id.device_details);
 
 //        deviceListView = (ListView) findViewById(R.id.deviceListView);
 //        deviceArrayAdaptor = new ArrayAdapter<String>(this, R.layout.fragment_home);

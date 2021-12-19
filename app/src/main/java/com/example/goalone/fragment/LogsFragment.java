@@ -40,18 +40,16 @@ public class LogsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //read history data from  database
-        warningMsg = new String[]{"High risk, danger", "Warning", "Caution", "Safer","Warning"};
-        time = new String[]{"10.00 am", "11.00 am", "11.10 am", "11.25 am", "11.45 am"};
+        warningMsg = new String[]{"High risk, danger", "Warning", "Safer"};
+        time = new String[]{"10.00 am", "11.00 am", "11.10 am"};
         images = new int[warningMsg.length];
         for(int i = 0; i < warningMsg.length; i++){
             if(warningMsg[i].equals("High risk, danger")){
-                images[i] = R.drawable.danger;
+                images[i] = R.drawable.high;
             }else if(warningMsg[i].equals("Warning")){
-                images[i] = R.drawable.warning;
-            }else if(warningMsg[i].equals("Caution")){
-                images[i] = R.drawable.caution;
+                images[i] = R.drawable.medium;
             }else if(warningMsg[i].equals("Safer")){
-                images[i] = R.drawable.safer;
+                images[i] = R.drawable.low;
             }
         }
     }
