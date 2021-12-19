@@ -64,7 +64,7 @@ public class BluetoothLEService {
                 .build();
 
         for (Map.Entry<ParcelUuid, byte[]> entry : advertiseData.getServiceData().entrySet()) {
-            System.out.println(entry.getKey().toString()+" "+ Arrays.toString(entry.getValue()));
+            System.out.println(entry.getKey().toString() + " " + Arrays.toString(entry.getValue()));
         }
         System.out.println(advertiseData.toString());
     }
@@ -96,23 +96,32 @@ public class BluetoothLEService {
         scanRunnable = new Runnable() {
             @Override
             public void run() {
+                if (isAdvertiseAble) bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        if(isAdvertiseAble) bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
                         bluetoothLeScanner.startScan(leScanCallback);
                         System.out.println("############ searching");
-                        advertiseRunnable = new Runnable() {
+                    }
+                });
+                advertiseRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
                                 bluetoothLeScanner.stopScan(leScanCallback);
-                                if(isAdvertiseAble) bluetoothLeAdvertiser.startAdvertising(advertiseSettings,advertiseData,advertisingCallback);
-
+                                if (isAdvertiseAble)
+                                    bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
+                                System.out.println("############ stopping");
                             }
-                        };
+                        });
+                        if (isAdvertiseAble)
+                            bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertiseData, advertisingCallback);
+                        serviceHandler.postDelayed(scanRunnable, TOGGLE_TIMEOUT);
                     }
-                });
-                if(isAdvertiseAble) serviceHandler.postDelayed(advertiseRunnable, TOGGLE_TIMEOUT);
+                };
+                if (isAdvertiseAble) serviceHandler.postDelayed(advertiseRunnable, TOGGLE_TIMEOUT);
 
             }
         };
@@ -122,12 +131,11 @@ public class BluetoothLEService {
     public void stopScanLeDevice() {
         serviceHandler.removeCallbacks(scanRunnable);
         serviceHandler.removeCallbacks(advertiseRunnable);
-
+        if (isAdvertiseAble) bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 bluetoothLeScanner.stopScan(leScanCallback);
-                if(isAdvertiseAble) bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
                 System.out.println("############ stopping");
             }
         });
