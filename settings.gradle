@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "GoAlone"
 include ':app'
+include ':RadarScanViewLibrary'

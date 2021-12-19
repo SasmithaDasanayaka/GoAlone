@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
@@ -11,15 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/device_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.kongqw.radarscanviewlibrary.RadarScanView
+            android:id="@+id/radarScanView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            app:radarBackgroundColor="@color/colorAccent"
+            app:radarBackgroundLinesColor="@color/colorPrimaryDark"
+            app:radarBackgroundLinesNumber="3"
+            app:radarBackgroundLinesWidth="5.5"
+            app:radarScanAlpha="0x33"
+            app:radarScanColor="#FF000000"
+            app:radarScanTime="5000" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

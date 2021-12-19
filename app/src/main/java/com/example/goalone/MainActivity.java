@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.kongqw.radarscanviewlibrary.RadarScanView;
 
 public class MainActivity extends AppCompatActivity {
 
