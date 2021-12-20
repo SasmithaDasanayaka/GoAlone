@@ -22,6 +22,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_ENABLE_BLUETOOTH = 11;
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 21;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 31;
+    private boolean isScanning = false;
 
     private BottomNavigationView bottomNavigationView;
     BluetoothLEService bluetoothLEService;
-    FloatingActionButton searchBtn;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +45,17 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothLEService = new BluetoothLEService();
         bluetoothLEService.initBluetoothLEService(this);
-        bluetoothLEService.startScanLeDevice();
+//        bluetoothLEService.startScanLeDevice();
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
         bottomNavigationView.setSelectedItemId(R.id.homeFragment);
 
-
-//        searchBtn = (FloatingActionButton) findViewById(R.id.floatingActionButton3);
-//
-//        searchBtn.setOnClickListener(v -> {
-//            bluetoothLEService.startScanLeDevice();
-//        });
+        fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(v -> {
+            toggleScanning();
+        });
 
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -95,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
 //            }
         }
     };
+
+    public void toggleScanning() {
+        isScanning = !isScanning;
+        if (isScanning) bluetoothLEService.startScanLeDevice();
+        else bluetoothLEService.stopScanLeDevice();
+
+        fab.setImageDrawable(ContextCompat.getDrawable(this, isScanning ? R.drawable.ic_stop : R.drawable.ic_search));
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
