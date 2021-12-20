@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.goalone">
     <!-- permission allows to discover new Bluetooth devices and change the device's Bluetooth settings. -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -19,10 +20,11 @@
             android:exported="false"
             android:label="@string/title_activity_verification"
             android:theme="@style/Theme.GoAlone.NoActionBar" />
-        <activity
-            android:name=".ui.login.verificationActivity"
-            android:exported="false"
-            android:label="@string/title_activity_verification" />
+<!--        <activity-->
+<!--            android:name=".ui.login.verificationActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_verification"-->
+<!--            tools:ignore="MissingClass" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

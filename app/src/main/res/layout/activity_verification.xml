@@ -11,7 +11,8 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.GoAlone.AppBarOverlay">
+        android:theme="@style/Theme.GoAlone.AppBarOverlay"
+        app:layout_constraintBottom_toTopOf="parent">
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -72,35 +73,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.18" />
-
-    <com.chaos.view.PinView
-        android:id="@+id/firstPinView"
-        style="@style/PinWidget.PinView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:cursorVisible="true"
-        android:hint="Hint."
-        android:inputType="text"
-        android:itemBackground="@mipmap/ic_launcher"
-        android:padding="@dimen/common_padding"
-        android:textColor="@color/text_colors"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:cursorColor="@color/line_selected"
-        app:cursorWidth="2dp"
-        app:hideLineWhenFilled="true"
-        app:itemCount="5"
-        app:itemHeight="48dp"
-        app:itemRadius="4dp"
-        app:itemSpacing="0dp"
-        app:itemWidth="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:lineColor="@color/line_colors"
-        app:lineWidth="2dp"
-        app:viewType="rectangle" />
 
     <Button
         android:id="@+id/button3"
