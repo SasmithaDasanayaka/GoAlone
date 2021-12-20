@@ -10,4 +10,6 @@
         <item>Safer</item>
     </string-array>
 
+    <string name="device_uuid">af22220e-0c42-475c-b071-7174f104a8a4</string>
+
 </resources>
