@@ -74,6 +74,24 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.18" />
 
+    <EditText
+        android:id="@+id/idEdtOtp"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="172dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="****"
+        android:textAlignment="center"
+        android:inputType="phone"
+        android:textColor="#0AA86E"
+        android:textColorHint="#0AA86E"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.486" />
+
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
@@ -90,10 +108,11 @@
         app:layout_constraintVertical_bias="0.705" />
 
     <EditText
-        android:id="@+id/editTextPhone"
+        android:id="@+id/idEdtPhoneNumber"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="172dp"
         android:layout_height="50dp"
+        android:textAlignment="center"
         android:ems="10"
         android:hint="+947********"
         android:inputType="phone"
