@@ -74,24 +74,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.18" />
 
-    <EditText
-        android:id="@+id/idEdtOtp"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="172dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:hint="****"
-        android:textAlignment="center"
-        android:inputType="phone"
-        android:textColor="#0AA86E"
-        android:textColorHint="#0AA86E"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.486" />
-
     <Button
         android:id="@+id/idBtnVerify"
         android:layout_width="wrap_content"
@@ -103,9 +85,10 @@
         app:iconTint="#0AA86E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.705" />
+        app:layout_constraintVertical_bias="0.679" />
 
     <EditText
         android:id="@+id/idEdtPhoneNumber"
@@ -118,7 +101,7 @@
         android:inputType="phone"
         android:textColor="#0AA86E"
         android:textColorHint="#0AA86E"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/idBtnGetOtp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -135,7 +118,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/idBtnVerify"
         app:layout_constraintVertical_bias="0.242" />
 
     <TextView
@@ -148,10 +131,26 @@
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
-        app:layout_constraintVertical_bias="0.095" />
+        app:layout_constraintTop_toBottomOf="@+id/idBtnGetOtp"
+        app:layout_constraintVertical_bias="0.016" />
+
+    <EditText
+        android:id="@+id/idEdtOtp"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="172dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="****"
+        android:inputType="phone"
+        android:textAlignment="center"
+        android:textColor="#0AA86E"
+        android:textColorHint="#0AA86E"
+        app:layout_constraintBottom_toTopOf="@+id/idBtnVerify"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

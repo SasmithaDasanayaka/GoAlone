@@ -66,7 +66,7 @@ public class VerificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //for checking weather the user has entered his mobile number or not
                 if(TextUtils.isEmpty(edtPhone.getText().toString())){
-                    Toast.makeText(VerificationActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT);
+                    Toast.makeText(VerificationActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
                 }else{
                     // calling send OTP method for getting OTP from Firebase
                     String phone = edtPhone.getText().toString();
@@ -90,9 +90,9 @@ public class VerificationActivity extends AppCompatActivity {
 
         //setSupportActionBar(binding.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
+//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 //        binding.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
