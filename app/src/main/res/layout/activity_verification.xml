@@ -60,7 +60,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/idBtnGetOtp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#0AA86E"
@@ -93,7 +93,7 @@
         app:layout_constraintVertical_bias="0.486" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/idBtnVerify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#0AA86E"
