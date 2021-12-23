@@ -34,15 +34,18 @@ import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends AppCompatActivity {
 
+
     private AppBarConfiguration appBarConfiguration;
     private ActivityVerificationBinding binding;
 
-    private FirebaseAuth mAuth; // variable for FirebaseAuth class
+    public static FirebaseAuth mAuth; // variable for FirebaseAuth class
     private EditText edtPhone, edtOTP;  // field for phone and OTP
 
     private Button verifyOTPBtn, generateOTPBtn;    // buttons for generating OTP and verifying OTP
 
     private String verificationId;   // string for storing verification ID
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,10 @@ public class VerificationActivity extends AppCompatActivity {
                 }
             }
         });
-
+        if(mAuth.getCurrentUser() != null){
+            startMain();
+        }
+//mAuth.signOut();
         //setSupportActionBar(binding.toolbar);
 
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
@@ -110,9 +116,9 @@ public class VerificationActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Intent i = new Intent(VerificationActivity.this, HomeFragment.class);
-                            startActivity(i);
-                            finish();
+                            if(mAuth.getCurrentUser() != null){
+                                startMain();
+                            }
                         }else{
                             Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -120,6 +126,11 @@ public class VerificationActivity extends AppCompatActivity {
                 });
     }
 
+    public void startMain(){
+        Intent i = new Intent(VerificationActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
     private void sendVerificationCode(String number){
         //getting OTP on user phone number
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)

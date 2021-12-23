@@ -21,7 +21,6 @@
         <activity
             android:name=".VerificationActivity"
             android:exported="true"
-            android:label="@string/title_activity_verification"
             android:theme="@style/Theme.GoAlone.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

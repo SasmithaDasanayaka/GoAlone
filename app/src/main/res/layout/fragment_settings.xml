@@ -24,36 +24,36 @@
             android:textColor="#0AA86E"
             app:layout_constraintBottom_toTopOf="@+id/switch2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.361"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.92" />
+            app:layout_constraintVertical_bias="0.757" />
 
         <Switch
             android:id="@+id/switch2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="352dp"
+            android:layout_marginBottom="556dp"
             android:paddingLeft="50px"
             android:paddingRight="50px"
             android:text="Show Notifications"
             android:textColor="#0AA86E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.445"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Switch
             android:id="@+id/switch3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="32dp"
             android:paddingLeft="50px"
             android:paddingRight="50px"
             android:text="Allow Vibrate"
             android:textColor="#0AA86E"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.391"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/switch2" />
 
@@ -67,10 +67,10 @@
             android:textColor="#0AA86E"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.388"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/switch3"
-            app:layout_constraintVertical_bias="0.109" />
+            app:layout_constraintVertical_bias="0.063" />
 
         <Button
             android:id="@+id/button"
@@ -84,7 +84,23 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/switch4"
-            app:layout_constraintVertical_bias="0.406" />
+            app:layout_constraintVertical_bias="0.206" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF0000"
+            android:text="Logout"
+            android:textColorHighlight="#FF0000"
+            android:textColorLink="#F30000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button"
+            app:layout_constraintVertical_bias="0.245" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
