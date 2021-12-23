@@ -1,20 +1,26 @@
 package com.example.goalone.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.goalone.MainActivity;
 import com.example.goalone.Model.Device;
 import com.example.goalone.R;
+import com.example.goalone.VerificationActivity;
 import com.example.goalone.adapter.DeviceAdapter;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.goalone.VerificationActivity;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -90,4 +96,6 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    String s = VerificationActivity.nameVal;
+    //System.out.println(s);
 }

@@ -8,15 +8,20 @@ import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.goalone.MainActivity;
 import com.example.goalone.Model.Device;
 import com.example.goalone.R;
+import com.example.goalone.VerificationActivity;
+import com.example.goalone.fragment.SettingsFragment;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;

@@ -1,9 +1,12 @@
 package com.example.goalone;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.goalone.fragment.HomeFragment;
+//import com.example.goalone.fragment.HomeFragment;
+import com.example.goalone.fragment.SettingsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,13 +42,14 @@ public class VerificationActivity extends AppCompatActivity {
     private ActivityVerificationBinding binding;
 
     public static FirebaseAuth mAuth; // variable for FirebaseAuth class
-    private EditText edtPhone, edtOTP;  // field for phone and OTP
+    private EditText edtPhone, edtOTP, edtName;  // field for phone and OTP
 
     private Button verifyOTPBtn, generateOTPBtn;    // buttons for generating OTP and verifying OTP
 
     private String verificationId;   // string for storing verification ID
+    public static String nameVal;
 
-
+    public static final String USER_NAME = "name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class VerificationActivity extends AppCompatActivity {
         // initializing variables for button and Edittext
         edtPhone = findViewById(R.id.idEdtPhoneNumber);
         edtOTP = findViewById(R.id.idEdtOtp);
+        edtName = findViewById(R.id.idEdtName);
         verifyOTPBtn = findViewById(R.id.idBtnVerify);
         generateOTPBtn = findViewById(R.id.idBtnGetOtp);
 
@@ -70,7 +75,10 @@ public class VerificationActivity extends AppCompatActivity {
                 //for checking weather the user has entered his mobile number or not
                 if(TextUtils.isEmpty(edtPhone.getText().toString())){
                     Toast.makeText(VerificationActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(TextUtils.isEmpty(edtName.getText().toString())) {
+                    Toast.makeText(VerificationActivity.this, "Please enter the name", Toast.LENGTH_SHORT).show();
+                }else
+                {
                     // calling send OTP method for getting OTP from Firebase
                     String phone = edtPhone.getText().toString();
                     sendVerificationCode(phone);
@@ -108,7 +116,23 @@ public class VerificationActivity extends AppCompatActivity {
 //            }
 //        });
     }
+    private void saveName(String name){
+        Context context = getApplicationContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsFragment.SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_NAME, name);
 
+        editor.apply();
+    }
+    public String getName(){
+        Context context = getApplicationContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsFragment.SHARED_PREFS, Context.MODE_PRIVATE);
+        nameVal = sharedPreferences.getString(USER_NAME, String.valueOf(true));
+
+        Toast.makeText(VerificationActivity.this, "Hi, "+nameVal+"!", Toast.LENGTH_LONG).show();
+
+        return nameVal;
+    }
     private void signInWithCredential(PhoneAuthCredential credential){
         //checking OTP is correct or not
         mAuth.signInWithCredential(credential)
@@ -117,6 +141,8 @@ public class VerificationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             if(mAuth.getCurrentUser() != null){
+                                saveName(edtName.getText().toString());
+                                getName();
                                 startMain();
                             }
                         }else{

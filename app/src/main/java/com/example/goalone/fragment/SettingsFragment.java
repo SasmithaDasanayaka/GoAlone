@@ -80,8 +80,6 @@ public class SettingsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
-
 //        bluetooth.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
