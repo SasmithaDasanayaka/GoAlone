@@ -1,12 +1,21 @@
 package com.example.goalone;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.goalone.fragment.HomeFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,11 +23,29 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.goalone.databinding.ActivityVerificationBinding;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends AppCompatActivity {
 
+
     private AppBarConfiguration appBarConfiguration;
     private ActivityVerificationBinding binding;
+
+    public static FirebaseAuth mAuth; // variable for FirebaseAuth class
+    private EditText edtPhone, edtOTP;  // field for phone and OTP
+
+    private Button verifyOTPBtn, generateOTPBtn;    // buttons for generating OTP and verifying OTP
+
+    private String verificationId;   // string for storing verification ID
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +54,51 @@ public class VerificationActivity extends AppCompatActivity {
         binding = ActivityVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // getting instance of FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+
+        // initializing variables for button and Edittext
+        edtPhone = findViewById(R.id.idEdtPhoneNumber);
+        edtOTP = findViewById(R.id.idEdtOtp);
+        verifyOTPBtn = findViewById(R.id.idBtnVerify);
+        generateOTPBtn = findViewById(R.id.idBtnGetOtp);
+
+        //onclick listener for generate OTP button
+        generateOTPBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //for checking weather the user has entered his mobile number or not
+                if(TextUtils.isEmpty(edtPhone.getText().toString())){
+                    Toast.makeText(VerificationActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
+                }else{
+                    // calling send OTP method for getting OTP from Firebase
+                    String phone = edtPhone.getText().toString();
+                    sendVerificationCode(phone);
+                }
+            }
+        });
+
+        // onClick listner for verify OTP button
+        verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // checking whether the otp field is empty
+                if (TextUtils.isEmpty(edtOTP.getText().toString())) {
+                    Toast.makeText(VerificationActivity.this, "Please enter OTP", Toast.LENGTH_SHORT).show();
+                }else{
+                    verifyCode(edtOTP.getText().toString());
+                }
+            }
+        });
+        if(mAuth.getCurrentUser() != null){
+            startMain();
+        }
+//mAuth.signOut();
         //setSupportActionBar(binding.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
+//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 //        binding.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -40,6 +107,73 @@ public class VerificationActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    private void signInWithCredential(PhoneAuthCredential credential){
+        //checking OTP is correct or not
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            if(mAuth.getCurrentUser() != null){
+                                startMain();
+                            }
+                        }else{
+                            Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    public void startMain(){
+        Intent i = new Intent(VerificationActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+    private void sendVerificationCode(String number){
+        //getting OTP on user phone number
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(number)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallBack)
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    //callback method is called on Phone auth provider
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        //this method is used when the OTP is sent from Firebase
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken){
+            super.onCodeSent(s, forceResendingToken);
+            verificationId = s;
+        }
+
+        @Override
+        // when the user receive OTP from Firebase
+        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+        // getting OTP code which is sent in phone auth credentials
+            final String code = phoneAuthCredential.getSmsCode();
+            //checking the code
+            if(code != null){
+                edtOTP.setText(code);
+                verifyCode(code);
+            }
+        }
+
+        @Override
+        public void onVerificationFailed(@NonNull FirebaseException e) {
+            Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    };
+
+    // verify code from Firebase
+    private void verifyCode(String code){
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+
+        //sign in method
+        signInWithCredential(credential);
     }
 
     @Override

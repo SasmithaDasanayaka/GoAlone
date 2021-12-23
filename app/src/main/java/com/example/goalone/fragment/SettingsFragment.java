@@ -1,5 +1,6 @@
 package com.example.goalone.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
 
+import com.example.goalone.MainActivity;
 import com.example.goalone.R;
+import com.example.goalone.VerificationActivity;
 
 import androidx.fragment.app.Fragment;
 
@@ -24,6 +27,7 @@ public class SettingsFragment extends Fragment {
     private Switch vibrate;
     private Switch ringing;
     private Button saveBtn;
+    private Button logoutBtn;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String BLUETOOTH_SWITCH = "bluetooth";
@@ -98,11 +102,21 @@ public class SettingsFragment extends Fragment {
         ringing = v.findViewById(R.id.switch4);
 
         saveBtn = v.findViewById((R.id.button));
+        logoutBtn = v.findViewById(R.id.logoutButton);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveData();
+            }
+        });
+
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerificationActivity.mAuth.signOut();
+                Intent i = new Intent(getActivity(), VerificationActivity.class);
+                startActivity(i);
             }
         });
 

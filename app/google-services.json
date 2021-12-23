@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "578454773121",
+    "project_id": "goalone-1a9c9",
+    "storage_bucket": "goalone-1a9c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578454773121:android:aaf6b63767dc7bc0755c80",
+        "android_client_info": {
+          "package_name": "com.example.goalone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578454773121-ctb2f405q1t23749b91p65is97q6q784.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArrz8vWFxrkP-FZU8_kO4Ok90cdoHys90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578454773121-ctb2f405q1t23749b91p65is97q6q784.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
