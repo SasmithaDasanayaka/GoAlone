@@ -30,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_ENABLE_BLUETOOTH = 11;
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 21;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 31;
+
     private boolean isScanning = false;
 
     private BottomNavigationView bottomNavigationView;
     BluetoothLEService bluetoothLEService;
     FloatingActionButton fab;
+    HomeFragment homeFragment;
+    LogsFragment logsFragment;
+    SettingsFragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +50,13 @@ public class MainActivity extends AppCompatActivity {
         bluetoothLEService = new BluetoothLEService();
         bluetoothLEService.initBluetoothLEService(this);
 //        bluetoothLEService.startScanLeDevice();
+        homeFragment = new HomeFragment();
+        logsFragment = new LogsFragment();
+        settingsFragment = new SettingsFragment();
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, homeFragment).commit();
         bottomNavigationView.setSelectedItemId(R.id.homeFragment);
 
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
@@ -57,20 +64,19 @@ public class MainActivity extends AppCompatActivity {
             toggleScanning();
         });
 
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.homeFragment:
-                        fragment = new HomeFragment();
+                        fragment = homeFragment;
                         break;
                     case R.id.logsFragment:
-                        fragment = new LogsFragment();
+                        fragment = logsFragment;
                         break;
                     case R.id.settingsFragment:
-                        fragment = new SettingsFragment();
+                        fragment = settingsFragment;
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
@@ -179,6 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
     }
 
     @Override

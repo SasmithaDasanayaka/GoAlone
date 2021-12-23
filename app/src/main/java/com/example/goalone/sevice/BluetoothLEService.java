@@ -15,6 +15,7 @@ import android.os.ParcelUuid;
 import android.util.Log;
 
 import com.example.goalone.MainActivity;
+import com.example.goalone.Model.Device;
 import com.example.goalone.R;
 
 import java.nio.charset.Charset;
@@ -36,13 +37,19 @@ public class BluetoothLEService {
     boolean isAdvertiseAble = true;
     AdvertiseData advertiseData;
     AdvertiseSettings advertiseSettings;
+    MainActivity mainActivity;
+
     final int TOGGLE_TIMEOUT = 10000;
+    final int MEASURED_POWER = -69;
+    final int N = 2;
+    final int AVERAGE_COUNT = 3;
 
     public void initBluetoothLEService(MainActivity context) {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         bluetoothLeAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
         isAdvertiseAble = bluetoothAdapter.isMultipleAdvertisementSupported();
+        mainActivity = context;
 
         if (!bluetoothAdapter.isEnabled()) {
             enableBleIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -76,6 +83,11 @@ public class BluetoothLEService {
                 public void onScanResult(int callbackType, ScanResult result) {
                     super.onScanResult(callbackType, result);
                     System.out.println("############ found " + result.getDevice().getAddress() + " " + result.getDevice().getName());
+                    addDevice(new Device(
+                            result.getDevice().getAddress(),
+                            System.currentTimeMillis(),
+                            Device.Threat.LEVEL3
+                    ), result.getRssi());
                 }
             };
 
@@ -139,5 +151,40 @@ public class BluetoothLEService {
                 System.out.println("############ stopping");
             }
         });
+    }
+
+    public double calculateAverageDistance(Device device) {
+        double sum = 0;
+        int size = device.getRssis().size();
+        for (int rssi :
+                device.getRssis().subList(Math.max(size - AVERAGE_COUNT, 0), size - 1)) {
+            sum += rssi;
+        }
+        return calculateDistance(sum / AVERAGE_COUNT);
+    }
+
+    public double calculateDistance(double rssi) {
+        return (double) Math.round(Math.pow(10, ((double) (MEASURED_POWER - rssi) / (10 * N))) * 100) / 100;
+    }
+
+    public void addDevice(Device device, int rssi) {
+        boolean in = false;
+        Device inDevice = null;
+        for (Device device1 : mainActivity.getHomeFragment().getDevices()) {
+            if (device1.getMacAddress().equals(device.getMacAddress())) {
+                in = true;
+                inDevice = device1;
+            }
+        }
+        if (!in) {
+            device.addRssi(rssi);
+            device.setAverageDistance(calculateAverageDistance(device));
+            mainActivity.getHomeFragment().addDevice(device);
+        } else {
+            inDevice.addRssi(rssi);
+            inDevice.setAverageDistance(calculateAverageDistance(inDevice));
+            mainActivity.getHomeFragment().updateDevices();
+        }
+
     }
 }
