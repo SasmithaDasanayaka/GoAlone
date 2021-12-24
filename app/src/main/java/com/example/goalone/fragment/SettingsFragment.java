@@ -36,7 +36,7 @@ public class SettingsFragment extends Fragment {
     public static final String RINGING_SWITCH = "ringing";
 
     private boolean bluetoothOnOff;
-    private boolean notificationOnOff;
+    public static boolean notificationOnOff;
     private boolean vibrateOnOff;
     private boolean ringingOnOff;
 

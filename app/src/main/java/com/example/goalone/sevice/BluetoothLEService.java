@@ -1,5 +1,6 @@
 package com.example.goalone.sevice;
 
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
@@ -11,11 +12,16 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import com.example.goalone.MainActivity;
 import com.example.goalone.Model.Device;
@@ -28,11 +34,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
+
 public class BluetoothLEService {
     BluetoothAdapter bluetoothAdapter;
     BluetoothLeScanner bluetoothLeScanner;
     Intent enableBleIntent;
     private final int REQUEST_ENABLE_BTLE = 1;
+
+    private final static String default_notification_channel_id = "default";
 
     Runnable scanRunnable;
     Runnable advertiseRunnable;
@@ -182,6 +191,19 @@ public class BluetoothLEService {
             }
         }
         if (!in) {
+            if(SettingsFragment.notificationOnOff){
+                Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                MediaPlayer mp = MediaPlayer.create(mainActivity.getApplicationContext(), notificationSound);
+                mp.start();
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(mainActivity.getApplicationContext(), default_notification_channel_id)
+                                .setSmallIcon(R.drawable. ic_launcher_foreground )
+                                .setContentTitle( "Test" )
+                                .setContentText( "Hello! This is my first push notification" );
+                NotificationManager mNotificationManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(( int ) System. currentTimeMillis () ,
+                        mBuilder.build());
+            }
             device.addRssi(rssi);
             device.setAverageDistance(calculateAverageDistance(device));
             mainActivity.getHomeFragment().addDevice(device);

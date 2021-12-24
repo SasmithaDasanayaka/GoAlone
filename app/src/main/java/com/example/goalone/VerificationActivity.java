@@ -1,8 +1,12 @@
 package com.example.goalone;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 //import com.example.goalone.fragment.HomeFragment;
@@ -20,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -37,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends AppCompatActivity {
 
+    private final static String default_notification_channel_id = "default";
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityVerificationBinding binding;
@@ -86,6 +92,23 @@ public class VerificationActivity extends AppCompatActivity {
             }
         });
 
+//        generateOTPBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notificationSound);
+//                mp.start();
+//                NotificationCompat.Builder mBuilder =
+//                        new NotificationCompat.Builder(VerificationActivity.this, default_notification_channel_id)
+//                                .setSmallIcon(R.drawable. ic_launcher_foreground )
+//                                .setContentTitle( "Test" )
+//                                .setContentText( "Hello! This is my first push notification" );
+//                NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE );
+//                mNotificationManager.notify(( int ) System. currentTimeMillis () ,
+//                        mBuilder.build());
+//            }
+//        });
+
         // onClick listner for verify OTP button
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,20 +124,7 @@ public class VerificationActivity extends AppCompatActivity {
         if(mAuth.getCurrentUser() != null){
             startMain();
         }
-//mAuth.signOut();
-        //setSupportActionBar(binding.toolbar);
 
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
-//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
     private void saveName(String name){
         Context context = getApplicationContext();
