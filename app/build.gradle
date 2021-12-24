@@ -54,4 +54,5 @@ dependencies {
     // Dependencies for Firebase Authentication and Cloud Firestore
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation "androidx.core:core:1.6.0"
 }

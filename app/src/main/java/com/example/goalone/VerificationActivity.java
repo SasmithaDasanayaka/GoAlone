@@ -1,9 +1,16 @@
 package com.example.goalone;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.goalone.fragment.HomeFragment;
+//import com.example.goalone.fragment.HomeFragment;
+import com.example.goalone.fragment.SettingsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -17,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -34,18 +42,20 @@ import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends AppCompatActivity {
 
+    private final static String default_notification_channel_id = "default";
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityVerificationBinding binding;
 
     public static FirebaseAuth mAuth; // variable for FirebaseAuth class
-    private EditText edtPhone, edtOTP;  // field for phone and OTP
+    private EditText edtPhone, edtOTP, edtName;  // field for phone and OTP
 
     private Button verifyOTPBtn, generateOTPBtn;    // buttons for generating OTP and verifying OTP
 
     private String verificationId;   // string for storing verification ID
+    public static String nameVal;
 
-
+    public static final String USER_NAME = "name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,7 @@ public class VerificationActivity extends AppCompatActivity {
         // initializing variables for button and Edittext
         edtPhone = findViewById(R.id.idEdtPhoneNumber);
         edtOTP = findViewById(R.id.idEdtOtp);
+        edtName = findViewById(R.id.idEdtName);
         verifyOTPBtn = findViewById(R.id.idBtnVerify);
         generateOTPBtn = findViewById(R.id.idBtnGetOtp);
 
@@ -70,13 +81,33 @@ public class VerificationActivity extends AppCompatActivity {
                 //for checking weather the user has entered his mobile number or not
                 if(TextUtils.isEmpty(edtPhone.getText().toString())){
                     Toast.makeText(VerificationActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(TextUtils.isEmpty(edtName.getText().toString())) {
+                    Toast.makeText(VerificationActivity.this, "Please enter the name", Toast.LENGTH_SHORT).show();
+                }else
+                {
                     // calling send OTP method for getting OTP from Firebase
                     String phone = edtPhone.getText().toString();
                     sendVerificationCode(phone);
                 }
             }
         });
+
+//        generateOTPBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notificationSound);
+//                mp.start();
+//                NotificationCompat.Builder mBuilder =
+//                        new NotificationCompat.Builder(VerificationActivity.this, default_notification_channel_id)
+//                                .setSmallIcon(R.drawable. ic_launcher_foreground )
+//                                .setContentTitle( "Test" )
+//                                .setContentText( "Hello! This is my first push notification" );
+//                NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE );
+//                mNotificationManager.notify(( int ) System. currentTimeMillis () ,
+//                        mBuilder.build());
+//            }
+//        });
 
         // onClick listner for verify OTP button
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,22 +124,25 @@ public class VerificationActivity extends AppCompatActivity {
         if(mAuth.getCurrentUser() != null){
             startMain();
         }
-//mAuth.signOut();
-        //setSupportActionBar(binding.toolbar);
 
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_verification);
-//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
+    private void saveName(String name){
+        Context context = getApplicationContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsFragment.SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_NAME, name);
 
+        editor.apply();
+    }
+    public String getName(){
+        Context context = getApplicationContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingsFragment.SHARED_PREFS, Context.MODE_PRIVATE);
+        nameVal = sharedPreferences.getString(USER_NAME, String.valueOf(true));
+
+        Toast.makeText(VerificationActivity.this, "Hi, "+nameVal+"!", Toast.LENGTH_LONG).show();
+
+        return nameVal;
+    }
     private void signInWithCredential(PhoneAuthCredential credential){
         //checking OTP is correct or not
         mAuth.signInWithCredential(credential)
@@ -117,6 +151,8 @@ public class VerificationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             if(mAuth.getCurrentUser() != null){
+                                saveName(edtName.getText().toString());
+                                getName();
                                 startMain();
                             }
                         }else{

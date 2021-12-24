@@ -36,7 +36,7 @@ public class SettingsFragment extends Fragment {
     public static final String RINGING_SWITCH = "ringing";
 
     private boolean bluetoothOnOff;
-    private boolean notificationOnOff;
+    public static boolean notificationOnOff;
     private boolean vibrateOnOff;
     private boolean ringingOnOff;
 
@@ -79,8 +79,6 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
 
 //        bluetooth.setOnClickListener(new View.OnClickListener() {
 //            @Override
