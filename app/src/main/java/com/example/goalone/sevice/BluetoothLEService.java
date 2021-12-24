@@ -1,6 +1,7 @@
 package com.example.goalone.sevice;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
@@ -22,11 +23,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.goalone.MainActivity;
 import com.example.goalone.Model.Device;
 import com.example.goalone.R;
 import com.example.goalone.VerificationActivity;
+import com.example.goalone.databinding.FragmentHomeBinding;
 import com.example.goalone.fragment.SettingsFragment;
 
 import java.nio.charset.Charset;
@@ -198,9 +201,12 @@ public class BluetoothLEService {
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(mainActivity.getApplicationContext(), default_notification_channel_id)
                                 .setSmallIcon(R.drawable. ic_launcher_foreground )
-                                .setContentTitle( "Test" )
-                                .setContentText( "Hello! This is my first push notification" );
+                                .setContentTitle( "Warning!" )
+                                .setContentText( "Keep the distance" )
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
                 NotificationManager mNotificationManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+
                 mNotificationManager.notify(( int ) System. currentTimeMillis () ,
                         mBuilder.build());
             }
