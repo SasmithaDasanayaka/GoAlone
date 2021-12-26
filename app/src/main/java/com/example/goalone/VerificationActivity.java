@@ -70,8 +70,8 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //for checking weather the user has entered his mobile number or not
-                if(TextUtils.isEmpty(edtPhone.getText().toString())){
-                    Toast.makeText(VerificationActivity.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(edtPhone.getText().toString()) || (edtPhone.getText().toString()).length() != 12 || (edtPhone.getText().toString()).charAt(0) != '+' ){
+                    Toast.makeText(VerificationActivity.this, "Please enter the phone number in format +94*********", Toast.LENGTH_SHORT).show();
                 }else if(TextUtils.isEmpty(edtName.getText().toString())) {
                     Toast.makeText(VerificationActivity.this, "Please enter the name", Toast.LENGTH_SHORT).show();
                 }else
@@ -167,6 +167,7 @@ public class VerificationActivity extends AppCompatActivity {
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
         // getting OTP code which is sent in phone auth credentials
             final String code = phoneAuthCredential.getSmsCode();
+            String desc = phoneAuthCredential.getProvider ();
             //checking the code
             if(code != null){
                 edtOTP.setText(code);
