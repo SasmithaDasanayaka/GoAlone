@@ -37,7 +37,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -109,10 +108,10 @@ public class BluetoothLEService {
                 .addServiceData(pUuid, Objects.requireNonNull(phoneNumber.substring(3)).getBytes(Charset.forName("UTF-8")))
                 .build();
 
-        for (Map.Entry<ParcelUuid, byte[]> entry : advertiseData.getServiceData().entrySet()) {
-            System.out.println(entry.getKey().toString() + " " + Arrays.toString(entry.getValue()));
-        }
-        System.out.println(advertiseData.toString());
+//        for (Map.Entry<ParcelUuid, byte[]> entry : advertiseData.getServiceData().entrySet()) {
+//            System.out.println(entry.getKey().toString() + " " + Arrays.toString(entry.getValue()));
+//        }
+//        System.out.println(advertiseData.toString());
     }
 
     // Device scan callback.
@@ -196,6 +195,13 @@ public class BluetoothLEService {
     }
 
     public void stopScanLeDevice() {
+        Iterator<Device> itr = mainActivity.getHomeFragment().getDevices().iterator();
+        while (itr.hasNext()) {
+            Device d = itr.next();
+            clearDevice(d);
+            itr.remove();
+        }
+
         serviceHandler.removeCallbacks(scanRunnable);
         serviceHandler.removeCallbacks(advertiseRunnable);
         if (isAdvertiseAble) bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
