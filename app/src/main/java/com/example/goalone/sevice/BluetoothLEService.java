@@ -17,8 +17,11 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -194,7 +197,22 @@ public class BluetoothLEService {
             }
         }
         if (!in) {
+            if(SettingsFragment.vibrateOnOff){
+                System.out.println("###################################### Vibrating...");
+                final Vibrator vibrator = (Vibrator) mainActivity.getSystemService(Context.VIBRATOR_SERVICE);
+                final VibrationEffect vibrationEffect;
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    vibrationEffect = VibrationEffect.createOneShot(1000, 150);
+
+                    vibrator.cancel();
+                    vibrator.vibrate(vibrationEffect);
+
+                }
+
+            }
             if(SettingsFragment.notificationOnOff){
+                System.out.println("###################################### Ringing...");
                 Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 MediaPlayer mp = MediaPlayer.create(mainActivity.getApplicationContext(), notificationSound);
                 mp.start();
