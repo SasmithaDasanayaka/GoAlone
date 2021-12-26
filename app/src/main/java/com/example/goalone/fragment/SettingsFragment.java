@@ -1,8 +1,12 @@
 package com.example.goalone.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +41,8 @@ public class SettingsFragment extends Fragment {
 
     private boolean bluetoothOnOff;
     public static boolean notificationOnOff;
-    private boolean vibrateOnOff;
-    private boolean ringingOnOff;
+    public static boolean vibrateOnOff;
+    public static boolean ringingOnOff;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

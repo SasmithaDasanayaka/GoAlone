@@ -1,6 +1,11 @@
 package com.example.goalone.sevice;
 
+import static android.provider.Settings.System.getString;
+
+import android.app.Fragment;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
@@ -12,21 +17,27 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.goalone.MainActivity;
 import com.example.goalone.Model.Device;
 import com.example.goalone.R;
 import com.example.goalone.VerificationActivity;
+import com.example.goalone.fragment.HomeFragment;
 import com.example.goalone.fragment.SettingsFragment;
 
 import java.nio.charset.Charset;
@@ -42,6 +53,8 @@ public class BluetoothLEService {
     private final int REQUEST_ENABLE_BTLE = 1;
 
     private final static String default_notification_channel_id = "default";
+    private final static String channelDescription = "default";
+    private final static String channelName = "default";
 
     Runnable scanRunnable;
     Runnable advertiseRunnable;
@@ -57,6 +70,10 @@ public class BluetoothLEService {
     final int MEASURED_POWER = -69;
     final int N = 2;
     final int AVERAGE_COUNT = 3;
+
+    public BluetoothLEService(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     public void initBluetoothLEService(MainActivity context) {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -191,18 +208,58 @@ public class BluetoothLEService {
             }
         }
         if (!in) {
-            if(SettingsFragment.notificationOnOff){
+            if(SettingsFragment.vibrateOnOff){
+                System.out.println("###################################### Vibrating...");
+                final Vibrator vibrator = (Vibrator) mainActivity.getSystemService(Context.VIBRATOR_SERVICE);
+                final VibrationEffect vibrationEffect;
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    vibrationEffect = VibrationEffect.createOneShot(1000, 150);
+
+                    vibrator.cancel();
+                    vibrator.vibrate(vibrationEffect);
+
+                }
+            }
+            if(SettingsFragment.ringingOnOff){
+                System.out.println("###################################### Ringing...");
                 Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 MediaPlayer mp = MediaPlayer.create(mainActivity.getApplicationContext(), notificationSound);
                 mp.start();
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(mainActivity.getApplicationContext(), default_notification_channel_id)
-                                .setSmallIcon(R.drawable. ic_launcher_foreground )
-                                .setContentTitle( "Test" )
-                                .setContentText( "Hello! This is my first push notification" );
+                                .setSmallIcon(R.drawable.high )
+                                .setContentTitle( "Warning!" )
+                                .setContentText( "Keep the distance" )
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
                 NotificationManager mNotificationManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+
                 mNotificationManager.notify(( int ) System. currentTimeMillis () ,
                         mBuilder.build());
+            }
+            if(SettingsFragment.notificationOnOff){
+                System.out.println("###################################### Notification sent...");
+
+                createNotificationChannel();
+
+//                Intent intent = new Intent(mainActivity, MainActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                PendingIntent pendingIntent = PendingIntent.getActivity(mainActivity, 0, intent, 0);
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(mainActivity, default_notification_channel_id)
+                        .setSmallIcon(R.drawable.high)
+                        .setContentTitle( "Warning!" )
+                        .setContentText( "Keep the distance" )
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        // Set the intent that will fire when the user taps the notification
+//                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mainActivity);
+
+                //setTap();
+                notificationManager.notify(1, builder.build());
             }
             device.addRssi(rssi);
             device.setAverageDistance(calculateAverageDistance(device));
@@ -214,4 +271,35 @@ public class BluetoothLEService {
         }
 
     }
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = channelName;
+            String description = channelDescription;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(default_notification_channel_id, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = mainActivity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
+
+//    private void setTap(){
+//        Intent intent = new Intent(BluetoothLEService.this, MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_channel_id)
+//                .setSmallIcon(R.drawable.high)
+//                .setContentTitle( "Warning!" )
+//                .setContentText( "Keep the distance" )
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                // Set the intent that will fire when the user taps the notification
+//                .setContentIntent(pendingIntent)
+//                .setAutoCancel(true);
+//    }
+
+
 }

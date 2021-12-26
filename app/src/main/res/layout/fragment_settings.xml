@@ -4,104 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.SettingsFragment"
-    android:orientation="vertical">
+    android:background="#8FE6BA"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".fragment.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <Switch
+        android:id="@+id/switch1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#8FE6BA">
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:paddingLeft="50px"
+        android:paddingRight="50px"
+        android:text="Bluetooth"
+        android:textColor="#0AA86E" />
 
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="50px"
-            android:paddingRight="50px"
-            android:text="Bluetooth"
-            android:textColor="#0AA86E"
-            app:layout_constraintBottom_toTopOf="@+id/switch2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.757" />
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="50px"
+        android:paddingRight="50px"
+        android:text="Show Notifications"
+        android:textColor="#0AA86E" />
 
-        <Switch
-            android:id="@+id/switch2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="556dp"
-            android:paddingLeft="50px"
-            android:paddingRight="50px"
-            android:text="Show Notifications"
-            android:textColor="#0AA86E"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="50px"
+        android:paddingRight="50px"
+        android:text="Allow Vibrate"
+        android:textColor="#0AA86E" />
 
-        <Switch
-            android:id="@+id/switch3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:paddingLeft="50px"
-            android:paddingRight="50px"
-            android:text="Allow Vibrate"
-            android:textColor="#0AA86E"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch2" />
+    <Switch
+        android:id="@+id/switch4"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="50px"
+        android:paddingRight="50px"
+        android:text="Allow ringing"
+        android:textColor="#0AA86E" />
 
-        <Switch
-            android:id="@+id/switch4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="50px"
-            android:paddingRight="50px"
-            android:text="Allow ringing"
-            android:textColor="#0AA86E"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch3"
-            app:layout_constraintVertical_bias="0.063" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="60dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#0AA86E"
             android:text="Save Changes"
-            android:textColor="#8FE6BA"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch4"
-            app:layout_constraintVertical_bias="0.206" />
+            android:textColor="#8FE6BA" />
 
         <Button
             android:id="@+id/logoutButton"
             style="@android:style/Widget.DeviceDefault.Light.Button.Small"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF0000"
             android:text="Logout"
             android:textColorHighlight="#FF0000"
             android:textColorLink="#F30000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button"
-            app:layout_constraintVertical_bias="0.245" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+/>
+    </LinearLayout>
 </LinearLayout>

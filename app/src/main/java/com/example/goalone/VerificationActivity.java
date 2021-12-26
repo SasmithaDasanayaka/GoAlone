@@ -92,23 +92,6 @@ public class VerificationActivity extends AppCompatActivity {
             }
         });
 
-//        generateOTPBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notificationSound);
-//                mp.start();
-//                NotificationCompat.Builder mBuilder =
-//                        new NotificationCompat.Builder(VerificationActivity.this, default_notification_channel_id)
-//                                .setSmallIcon(R.drawable. ic_launcher_foreground )
-//                                .setContentTitle( "Test" )
-//                                .setContentText( "Hello! This is my first push notification" );
-//                NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE );
-//                mNotificationManager.notify(( int ) System. currentTimeMillis () ,
-//                        mBuilder.build());
-//            }
-//        });
-
         // onClick listner for verify OTP button
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
             @Override
