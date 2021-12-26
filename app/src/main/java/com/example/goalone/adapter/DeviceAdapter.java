@@ -27,7 +27,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             super(itemView);
 
             distanceView = itemView.findViewById(R.id.distance);
-
+            itemView.findViewById(R.id.date).setVisibility(View.GONE);
         }
 
         public TextView getDistanceView() {

@@ -53,7 +53,7 @@ public class BluetoothLEService {
     BluetoothLeScanner bluetoothLeScanner;
     Intent enableBleIntent;
     private final int REQUEST_ENABLE_BTLE = 1;
-    final int RECYCLE_DEVICE_TIMEOUT = 5000;
+    final int RECYCLE_DEVICE_TIMEOUT = 30000;
 
 
     private final static String default_notification_channel_id = "default";

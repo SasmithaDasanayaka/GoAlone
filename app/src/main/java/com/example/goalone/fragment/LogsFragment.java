@@ -27,7 +27,7 @@ public class LogsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ArrayList<Device> deviceArrayList = new ArrayList<>();
+    ArrayList<Device> deviceArrayList;
     RecyclerView recyclerView;
 
     private String[] warningMsg, time;
@@ -72,6 +72,7 @@ public class LogsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_logs, container, false);
 
         recyclerView = v.findViewById(R.id.recyclerView);
+        deviceArrayList = new ArrayList<>();
         DeviceLogsAdapter deviceAdapter = new DeviceLogsAdapter(deviceArrayList);
 //        MyAdapter myAdapter = new MyAdapter(this.getContext(), warningMsg, time, images);
         recyclerView.setAdapter(deviceAdapter);
