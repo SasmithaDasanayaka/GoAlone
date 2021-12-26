@@ -68,7 +68,7 @@ public class Device {
     }
 
     public void setThreatLevel(Threat threatLevel) {
-        maxThreat = (maxThreat.getValue() < threatLevel.getValue()) ? threatLevel : maxThreat;
+        maxThreat = (maxThreat != null && maxThreat.getValue() < threatLevel.getValue()) ? threatLevel : maxThreat;
         this.threatLevel = threatLevel;
     }
 
