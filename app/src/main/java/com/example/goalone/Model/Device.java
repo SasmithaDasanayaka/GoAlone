@@ -36,6 +36,8 @@ public class Device {
         this.averageDistance = 0;
         rssis = new ArrayList<Integer>();
         this.maxThreat = threatLevel;
+        this.lastIdentifiedTime = lastIdentifiedTime;
+
     }
 
     public String getUser() {

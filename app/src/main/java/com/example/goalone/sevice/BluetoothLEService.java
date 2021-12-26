@@ -321,6 +321,7 @@ public class BluetoothLEService {
         } else {
             inDevice.addRssi(rssi);
             inDevice.setAverageDistance(calculateAverageDistance(inDevice));
+            inDevice.setLastIdentifiedTime(System.currentTimeMillis());
             mainActivity.getHomeFragment().updateDevices();
         }
 

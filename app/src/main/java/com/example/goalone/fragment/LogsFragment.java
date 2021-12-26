@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.goalone.Model.Device;
 import com.example.goalone.R;
-import com.example.goalone.adapter.DeviceAdapter;
+import com.example.goalone.adapter.DeviceLogsAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,7 +72,7 @@ public class LogsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_logs, container, false);
 
         recyclerView = v.findViewById(R.id.recyclerView);
-        DeviceAdapter deviceAdapter = new DeviceAdapter(deviceArrayList);
+        DeviceLogsAdapter deviceAdapter = new DeviceLogsAdapter(deviceArrayList);
 //        MyAdapter myAdapter = new MyAdapter(this.getContext(), warningMsg, time, images);
         recyclerView.setAdapter(deviceAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
