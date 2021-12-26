@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         getPermissions();
 
-        bluetoothLEService = new BluetoothLEService();
+        bluetoothLEService = new BluetoothLEService(this);
         bluetoothLEService.initBluetoothLEService(this);
 //        bluetoothLEService.startScanLeDevice();
         homeFragment = new HomeFragment();

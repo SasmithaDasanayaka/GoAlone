@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
     private boolean bluetoothOnOff;
     public static boolean notificationOnOff;
     public static boolean vibrateOnOff;
-    private boolean ringingOnOff;
+    public static boolean ringingOnOff;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
