@@ -1,11 +1,7 @@
 package com.example.goalone.sevice;
 
-import static android.provider.Settings.System.getString;
-
-import android.app.Fragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
@@ -13,11 +9,10 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -28,22 +23,27 @@ import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.example.goalone.MainActivity;
 import com.example.goalone.Model.Device;
 import com.example.goalone.R;
 import com.example.goalone.VerificationActivity;
-import com.example.goalone.fragment.HomeFragment;
 import com.example.goalone.fragment.SettingsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 
 public class BluetoothLEService {
@@ -95,10 +95,14 @@ public class BluetoothLEService {
         ParcelUuid pUuid = new ParcelUuid(UUID.fromString(context.getString(R.string.device_uuid)));
         System.out.println("**************** " + pUuid.toString());
 
+        FirebaseUser user = VerificationActivity.mAuth.getCurrentUser();
+
+        String phoneNumber = user.getPhoneNumber();
+
         advertiseData = new AdvertiseData.Builder()
                 .setIncludeDeviceName(false)
                 .setIncludeTxPowerLevel(false)
-                .addServiceData(pUuid, "1234".getBytes(Charset.forName("UTF-8")))
+                .addServiceData(pUuid, Objects.requireNonNull(phoneNumber.substring(3)).getBytes(Charset.forName("UTF-8")))
                 .build();
 
         for (Map.Entry<ParcelUuid, byte[]> entry : advertiseData.getServiceData().entrySet()) {
@@ -113,8 +117,23 @@ public class BluetoothLEService {
                 @Override
                 public void onScanResult(int callbackType, ScanResult result) {
                     super.onScanResult(callbackType, result);
+
+                    ScanRecord scanRecord = result.getScanRecord();
+                    String user = "UnKnown";
+
+                    if (scanRecord != null) {
+                        for (Map.Entry<ParcelUuid, byte[]> entry : scanRecord.getServiceData().entrySet()) {
+                            System.out.println(entry.getKey().toString() + " " + new String(entry.getValue(), Charset.forName("UTF-8")));
+                            if (entry.getKey().toString().equals(mainActivity.getString(R.string.device_uuid))) {
+                                user = "+94" + new String(entry.getValue(), Charset.forName("UTF-8"));
+                                System.out.println("we received:" + user);
+                            }
+                        }
+                    }
+
                     System.out.println("############ found " + result.getDevice().getAddress() + " " + result.getDevice().getName());
                     addDevice(new Device(
+                            user,
                             result.getDevice().getAddress(),
                             System.currentTimeMillis(),
                             Device.Threat.LEVEL3
@@ -123,6 +142,7 @@ public class BluetoothLEService {
             };
 
     private AdvertiseCallback advertisingCallback = new AdvertiseCallback() {
+
         @Override
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
             super.onStartSuccess(settingsInEffect);
@@ -154,13 +174,11 @@ public class BluetoothLEService {
                             @Override
                             public void run() {
                                 bluetoothLeScanner.stopScan(leScanCallback);
-                                if (isAdvertiseAble)
-                                    bluetoothLeAdvertiser.stopAdvertising(advertisingCallback);
                                 System.out.println("############ stopping");
                             }
                         });
-                        if (isAdvertiseAble)
-                            bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertiseData, advertisingCallback);
+
+                        bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertiseData, advertisingCallback);
                         serviceHandler.postDelayed(scanRunnable, TOGGLE_TIMEOUT);
                     }
                 };
@@ -201,19 +219,34 @@ public class BluetoothLEService {
     public void addDevice(Device device, int rssi) {
         boolean in = false;
         Device inDevice = null;
+        boolean d1 = false;
+        if(device.getUser() != null){
+            d1 = true;
+        }
         for (Device device1 : mainActivity.getHomeFragment().getDevices()) {
-            if (device1.getMacAddress().equals(device.getMacAddress())) {
-                in = true;
-                inDevice = device1;
+            boolean d2 = false;
+            if(device1.getUser() != null){
+                d2 = true;
+            }
+            if(d1 && d2){
+                if(device1.getUser().equals(device.getUser())) {
+                    in = true;
+                    inDevice = device1;
+                }
+            }else{
+                if(device1.getMacAddress().equals(device.getMacAddress())) {
+                    in = true;
+                    inDevice = device1;
+                }
             }
         }
         if (!in) {
-            if(SettingsFragment.vibrateOnOff){
+            if (SettingsFragment.vibrateOnOff) {
                 System.out.println("###################################### Vibrating...");
                 final Vibrator vibrator = (Vibrator) mainActivity.getSystemService(Context.VIBRATOR_SERVICE);
                 final VibrationEffect vibrationEffect;
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrationEffect = VibrationEffect.createOneShot(1000, 150);
 
                     vibrator.cancel();
@@ -221,24 +254,24 @@ public class BluetoothLEService {
 
                 }
             }
-            if(SettingsFragment.ringingOnOff){
+            if (SettingsFragment.ringingOnOff) {
                 System.out.println("###################################### Ringing...");
                 Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 MediaPlayer mp = MediaPlayer.create(mainActivity.getApplicationContext(), notificationSound);
                 mp.start();
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(mainActivity.getApplicationContext(), default_notification_channel_id)
-                                .setSmallIcon(R.drawable.high )
-                                .setContentTitle( "Warning!" )
-                                .setContentText( "Keep the distance" )
+                                .setSmallIcon(R.drawable.high)
+                                .setContentTitle("Warning!")
+                                .setContentText("Keep the distance")
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                 NotificationManager mNotificationManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                mNotificationManager.notify(( int ) System. currentTimeMillis () ,
+                mNotificationManager.notify((int) System.currentTimeMillis(),
                         mBuilder.build());
             }
-            if(SettingsFragment.notificationOnOff){
+            if (SettingsFragment.notificationOnOff) {
                 System.out.println("###################################### Notification sent...");
 
                 createNotificationChannel();
@@ -249,8 +282,8 @@ public class BluetoothLEService {
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(mainActivity, default_notification_channel_id)
                         .setSmallIcon(R.drawable.high)
-                        .setContentTitle( "Warning!" )
-                        .setContentText( "Keep the distance" )
+                        .setContentTitle("Warning!")
+                        .setContentText("Keep the distance")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         // Set the intent that will fire when the user taps the notification
 //                        .setContentIntent(pendingIntent)
@@ -263,6 +296,20 @@ public class BluetoothLEService {
             }
             device.addRssi(rssi);
             device.setAverageDistance(calculateAverageDistance(device));
+
+            if (device.getUser() != "UnKnown") {
+                FirebaseDatabase d = FirebaseDatabase.getInstance();
+                d.getReference().child("users").child(device.getUser()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            device.setuName(Objects.requireNonNull(task.getResult()).getValue(String.class));
+                            mainActivity.getHomeFragment().updateDevices();
+                        }
+                    }
+                });
+            }
+
             mainActivity.getHomeFragment().addDevice(device);
         } else {
             inDevice.addRssi(rssi);
@@ -271,8 +318,9 @@ public class BluetoothLEService {
         }
 
     }
-    private void createNotificationChannel(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = channelName;
             String description = channelDescription;
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -283,7 +331,6 @@ public class BluetoothLEService {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
 
 
 //    private void setTap(){

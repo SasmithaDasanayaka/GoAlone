@@ -30,15 +30,18 @@
                 android:id="@+id/distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:paddingTop="20px"
+                android:layout_marginEnd="196dp"
                 android:paddingRight="10px"
+                android:paddingTop="20px"
                 android:text="10.00 am"
                 android:textColor="#0AA86E"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/warning"
-                app:layout_constraintTop_toBottomOf="@+id/warning" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/riskLevel2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.52" />
 
             <TextView
                 android:id="@+id/warning"

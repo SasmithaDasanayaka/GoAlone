@@ -9,14 +9,36 @@ public class Device {
     private Threat threatLevel;
     private ArrayList<Integer> rssis;
     private double averageDistance;
+    private String user = "UnKnown";
+    private String uName = "UnKnown";
 
-    public Device(String macAddress, long lastIdentifiedTime, Threat threatLevel) {
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+
+    public Device(String user, String macAddress, long lastIdentifiedTime, Threat threatLevel) {
+        this.user = user;
         this.macAddress = macAddress;
         this.lastIdentifiedTime = lastIdentifiedTime;
         this.threatLevel = threatLevel;
         this.averageDistance = 0;
         rssis = new ArrayList<Integer>();
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
 
     public String getMacAddress() {
         return macAddress;
@@ -42,13 +64,14 @@ public class Device {
         this.threatLevel = threatLevel;
     }
 
-    public enum Threat{
+    public enum Threat {
         NONE(0),
         LEVEL1(1),
         LEVEL2(2),
         LEVEL3(3),
         ;
         int value;
+
         Threat(int val) {
             this.value = val;
         }
@@ -62,7 +85,7 @@ public class Device {
         return rssis;
     }
 
-    public void addRssi(Integer rssi){
+    public void addRssi(Integer rssi) {
         rssis.add(rssi);
     }
 
@@ -71,6 +94,10 @@ public class Device {
     }
 
     public void setAverageDistance(double averageDistance) {
+        System.out.println("Average distance: " + Integer.toString((int) averageDistance));
         this.averageDistance = averageDistance;
+        if (this.averageDistance < 1) setThreatLevel(Threat.LEVEL3);
+        else if (this.averageDistance < 2) setThreatLevel(Threat.LEVEL2);
+        else setThreatLevel(Threat.LEVEL1);
     }
 }

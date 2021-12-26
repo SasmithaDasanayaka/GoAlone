@@ -63,7 +63,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Device device = dataset.get(position);
         String distance = ((double) Math.round(device.getAverageDistance()*1000)/1000)+" m";
-        holder.getDistanceView().setText(distance);
+        String user = device.getuName();
+        holder.getDistanceView().setText(user);
     }
 
     @Override
