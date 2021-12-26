@@ -266,17 +266,6 @@ public class BluetoothLEService {
                 Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 MediaPlayer mp = MediaPlayer.create(mainActivity.getApplicationContext(), notificationSound);
                 mp.start();
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(mainActivity.getApplicationContext(), default_notification_channel_id)
-                                .setSmallIcon(R.drawable.high)
-                                .setContentTitle("Warning!")
-                                .setContentText("Keep the distance")
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-                NotificationManager mNotificationManager = (NotificationManager) mainActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-
-                mNotificationManager.notify((int) System.currentTimeMillis(),
-                        mBuilder.build());
             }
             if (SettingsFragment.notificationOnOff) {
                 System.out.println("###################################### Notification sent...");
