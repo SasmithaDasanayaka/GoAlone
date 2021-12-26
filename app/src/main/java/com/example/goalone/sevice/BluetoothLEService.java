@@ -70,7 +70,7 @@ public class BluetoothLEService {
     MainActivity mainActivity;
 
     final int TOGGLE_TIMEOUT = 10000;
-    final int MEASURED_POWER = -69;
+    final int MEASURED_POWER = -75;
     final int N = 2;
     final int AVERAGE_COUNT = 3;
 
@@ -135,12 +135,14 @@ public class BluetoothLEService {
                     }
 
                     System.out.println("############ found " + result.getDevice().getAddress() + " " + result.getDevice().getName());
-                    addDevice(new Device(
+                    Device dev = new Device(
                             user,
                             result.getDevice().getAddress(),
                             System.currentTimeMillis(),
-                            Device.Threat.LEVEL3
-                    ), result.getRssi());
+                            Device.Threat.LEVEL1
+                    );
+                    dev.setAverageDistance(calculateDistance(result.getRssi()));
+                    addDevice(dev, result.getRssi());
                 }
             };
 
@@ -297,7 +299,7 @@ public class BluetoothLEService {
                 notificationManager.notify(1, builder.build());
             }
             device.addRssi(rssi);
-            device.setAverageDistance(calculateAverageDistance(device));
+            device.setAverageDistance(calculateDistance(rssi));
 
             if (device.getUser() != "UnKnown") {
                 FirebaseDatabase d = FirebaseDatabase.getInstance();
@@ -311,11 +313,13 @@ public class BluetoothLEService {
                     }
                 });
             }
+            System.out.println(device.getUser()+" "+ rssi+" "+calculateDistance(rssi));
 
             mainActivity.getHomeFragment().addDevice(device);
         } else {
+            System.out.println(inDevice.getUser()+" "+ rssi+" "+calculateDistance(rssi));
             inDevice.addRssi(rssi);
-            inDevice.setAverageDistance(calculateAverageDistance(inDevice));
+            inDevice.setAverageDistance(calculateDistance(rssi));
             inDevice.setLastIdentifiedTime(System.currentTimeMillis());
             mainActivity.getHomeFragment().updateDevices();
         }
