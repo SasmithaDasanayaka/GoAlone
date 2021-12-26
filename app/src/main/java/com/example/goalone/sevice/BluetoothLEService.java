@@ -31,12 +31,14 @@ import com.example.goalone.VerificationActivity;
 import com.example.goalone.fragment.SettingsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,6 +53,8 @@ public class BluetoothLEService {
     BluetoothLeScanner bluetoothLeScanner;
     Intent enableBleIntent;
     private final int REQUEST_ENABLE_BTLE = 1;
+    final int RECYCLE_DEVICE_TIMEOUT = 5000;
+
 
     private final static String default_notification_channel_id = "default";
     private final static String channelDescription = "default";
@@ -187,6 +191,8 @@ public class BluetoothLEService {
             }
         };
         serviceHandler.post(scanRunnable);
+        serviceHandler.postDelayed(garbageRunnable,5000);
+
     }
 
     public void stopScanLeDevice() {
@@ -200,6 +206,7 @@ public class BluetoothLEService {
                 System.out.println("############ stopping");
             }
         });
+        serviceHandler.removeCallbacks(garbageRunnable);
     }
 
     public double calculateAverageDistance(Device device) {
@@ -220,21 +227,21 @@ public class BluetoothLEService {
         boolean in = false;
         Device inDevice = null;
         boolean d1 = false;
-        if(device.getUser() != null){
+        if (device.getUser() != null) {
             d1 = true;
         }
         for (Device device1 : mainActivity.getHomeFragment().getDevices()) {
             boolean d2 = false;
-            if(device1.getUser() != null){
+            if (device1.getUser() != null) {
                 d2 = true;
             }
-            if(d1 && d2){
-                if(device1.getUser().equals(device.getUser())) {
+            if (d1 && d2) {
+                if (device1.getUser().equals(device.getUser())) {
                     in = true;
                     inDevice = device1;
                 }
-            }else{
-                if(device1.getMacAddress().equals(device.getMacAddress())) {
+            } else {
+                if (device1.getMacAddress().equals(device.getMacAddress())) {
                     in = true;
                     inDevice = device1;
                 }
@@ -330,6 +337,28 @@ public class BluetoothLEService {
             NotificationManager notificationManager = mainActivity.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    Runnable garbageRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Iterator<Device> itr = mainActivity.getHomeFragment().getDevices().iterator();
+            while (itr.hasNext()) {
+                Device d = itr.next();
+                if (System.currentTimeMillis() - d.getLastIdentifiedTime() > RECYCLE_DEVICE_TIMEOUT) {
+                    itr.remove();
+                    clearDevice(d);
+                }
+            }
+            serviceHandler.postDelayed(this, 5000);
+
+        }
+    };
+
+    public void clearDevice(Device device) {
+        FirebaseDatabase d = FirebaseDatabase.getInstance();
+        d.getReference().child("recent").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())).push().setValue(device);
+        mainActivity.getHomeFragment().updateDevices();
     }
 
 

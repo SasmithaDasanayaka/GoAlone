@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
+public class DeviceLogsAdapter extends RecyclerView.Adapter<DeviceLogsAdapter.ViewHolder> {
     private ArrayList<Device> dataset;
 
-    public DeviceAdapter(ArrayList<Device> devices) {
+    public DeviceLogsAdapter(ArrayList<Device> devices) {
         dataset = devices;
     }
 
@@ -40,7 +40,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public int getItemViewType(int position) {
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
-        return dataset.get(position).getThreatLevel().getValue();
+        return dataset.get(position).getMaxThreat().getValue();
     }
 
     @NonNull

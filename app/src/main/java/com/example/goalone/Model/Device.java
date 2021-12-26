@@ -11,7 +11,10 @@ public class Device {
     private double averageDistance;
     private String user = "UnKnown";
     private String uName = "UnKnown";
+    private Threat maxThreat;
 
+    public Device() {
+    }
 
     public String getuName() {
         return uName;
@@ -21,6 +24,9 @@ public class Device {
         this.uName = uName;
     }
 
+    public Threat getMaxThreat() {
+        return maxThreat;
+    }
 
     public Device(String user, String macAddress, long lastIdentifiedTime, Threat threatLevel) {
         this.user = user;
@@ -29,6 +35,7 @@ public class Device {
         this.threatLevel = threatLevel;
         this.averageDistance = 0;
         rssis = new ArrayList<Integer>();
+        this.maxThreat = threatLevel;
     }
 
     public String getUser() {
@@ -61,6 +68,7 @@ public class Device {
     }
 
     public void setThreatLevel(Threat threatLevel) {
+        maxThreat = (maxThreat.getValue() < threatLevel.getValue()) ? threatLevel : maxThreat;
         this.threatLevel = threatLevel;
     }
 
